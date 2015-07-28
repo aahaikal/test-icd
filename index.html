@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="./styles/token-input-facebook.css" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./src/jquery.tokeninput.js"></script>
+
+<head>
+    <title>Title of the document</title>
+</head>
+
+<body class="container">
+    <div class="col-lg-12">
+        <div class="modal-dialog" style="margin-bottom:0">
+            <div class="modal-content">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Search ICD-10 Codes</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-lg-9 col-sm-offset-1">
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control " id="search" placeholder="Code">
+                                <ul class="list-unstyled list-group" id="groups">
+                                    <li class="checkbox">
+                                        <label>
+                                            <input type="checkbox" class="group" value="A00-B99"> A00-B99 - Certain infectious and parasitic diseases
+                                        </label>
+                                    </li>
+                                    <li class="checkbox">
+                                        <label>
+                                            <input type="checkbox" class="group" value="C00-D49"> C00-D49 - Neoplasms
+                                        </label>
+                                    </li>
+                                    <li class="checkbox">
+                                        <label>
+                                            <input type="checkbox" class="group" value="D50-D89"> D50-D89 - Diseases of the blood and blood-forming organs and certain disorders 
+                                        </label>
+                                    </li>
+                                    <li class="checkbox">
+                                        <label>
+                                            <input type="checkbox" class="group" value="E00-E89"> E00-E89 - Endocrine, nutritional and metabolic diseases
+                                        </label>
+                                    </li>
+                                    <li class="checkbox">
+                                        <label>
+                                            <input type="checkbox" class="group" value="F01-F99"> F01-F99 - Mental, Behavioral and Neurodevelopmental disorders
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- <button type="submit" class="btn btn-default">Submit</button> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+        $("#search").tokenInput(function() {
+            return "http://localhost:3000/codes.json?query=" + groupsVal()
+        }, {
+            minChars: 3,
+            queryParam: 'term',
+            tokenValue: 'name',
+            theme: "facebook",
+            crossDomain: false,
+            resultsLimit: '10',
+            preventDuplicates: true,
+            tokenFormatter: function(item) {
+                return "<li><p><b>" + item.name + "</b> " + item.short_description + "</p></li>"
+            },
+            resultsFormatter: function(item) {
+                return "<li><p>" + item.name + " " + item.short_description + "</p></li>"
+            }
+        });
+
+        function groupsVal() {
+            var groups = $('#groups input:checked').map(function(_, el) {
+                return $(el).val();
+            }).get().join(",");
+            return groups
+        };
+
+        $('#groups input').change(function() {
+            groupsVal()
+        });
+
+        // var groups = $('#groups input:checked').map(function(i, v) {
+        //     return $(this).val();
+        // }).toArray();
+
+    });
+    </script>
+</body>
+
+</html>
