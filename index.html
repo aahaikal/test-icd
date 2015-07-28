@@ -61,7 +61,7 @@
     $(document).ready(function() {
 
         $("#search").tokenInput(function() {
-            return "http://kipuicd.herokuapp.com/codes.json?query=" + groupsVal()
+            return "https://kipuicd.herokuapp.com/codes.json?query=" + groupsVal()
         }, {
             minChars: 3,
             queryParam: 'term',
